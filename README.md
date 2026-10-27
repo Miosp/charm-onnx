@@ -6,26 +6,36 @@ aesthetic / quality assessment models. Inference needs only `onnxruntime`, `nump
 
 ## Usage
 
+Exported models are on the Hugging Face Hub at
+[Miosp/charm-onnx](https://huggingface.co/Miosp/charm-onnx) and download on first use:
+
 ```sh
-uv sync                                   # Python 3.12, includes the export group
-uv run python -m charm_onnx.export        # all datasets -> models/<dataset>/
-uv run python -m charm_onnx.export aadb   # or just some
-uv run python -m charm_onnx.inference --dataset aadb photo.jpg
+pip install git+https://github.com/Miosp/charm-onnx
+python -m charm_onnx.inference --dataset aadb photo.jpg
 ```
 
 ```python
 from charm_onnx.inference import CharmScorer
 
-scorer = CharmScorer("models/aadb", "aadb")
+scorer = CharmScorer.from_pretrained("aadb")
 scorer.score("photo.jpg")
+```
+
+To export yourself (Python 3.12 only, the upstream tokenizer breaks on 3.13+):
+
+```sh
+uv sync                                   # includes the export and dev groups
+uv run python -m charm_onnx.export        # all datasets -> models/<dataset>/
+uv run python -m charm_onnx.export aadb   # or just some
+uv run python -m charm_onnx.inference --dataset aadb --models-dir models photo.jpg
 ```
 
 Datasets: `aadb`, `ava` (DINOv2-large), `baid`, `koniq10k`, `para`, `spaq`, `tad66k`.
 Scores are what upstream `backbone.predict` returns (distribution mean for `ava`/`para`,
 the head output otherwise).
 
-For deployment copy `models/<dataset>/` (`model.onnx`, `pos_embed.npy`) and install the
-package without the export group: `uv sync --no-default-groups`.
+`CharmScorer("models/aadb", "aadb")` loads a local export directory (`model.onnx`,
+`pos_embed.npy`) instead of downloading.
 
 ## What the export does
 

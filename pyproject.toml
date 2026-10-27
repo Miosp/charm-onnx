@@ -3,7 +3,7 @@ name = "charm-onnx"
 version = "0.1.0"
 description = "ONNX Runtime inference for Charm image aesthetic/quality assessment models"
 license = "Apache-2.0"
-requires-python = ">=3.12,<3.13"  # Charm-tokenizer breaks on 3.13 (PEP 667)
+requires-python = ">=3.12"  # export/tests need exactly 3.12: Charm-tokenizer breaks on 3.13 (PEP 667)
 dependencies = [
     "huggingface-hub",
     "numpy",

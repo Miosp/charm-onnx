@@ -2,7 +2,8 @@
 
 from dataclasses import dataclass
 
-HF_REPO_ID = "FatemehBehrad/Charm"
+HF_REPO_ID = "FatemehBehrad/Charm"  # original PyTorch checkpoints
+HF_ONNX_REPO_ID = "Miosp/charm-onnx"  # exported models, one directory per dataset
 
 # Files written per dataset by `charm_onnx.export`, read by `charm_onnx.inference`.
 MODEL_FILE = "model.onnx"
