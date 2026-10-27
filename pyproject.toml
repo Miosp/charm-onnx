@@ -1,0 +1,49 @@
+[project]
+name = "charm-onnx"
+version = "0.1.0"
+description = "ONNX Runtime inference for Charm image aesthetic/quality assessment models"
+license = "Apache-2.0"
+requires-python = ">=3.12,<3.13"  # Charm-tokenizer breaks on 3.13 (PEP 667)
+dependencies = [
+    "huggingface-hub",
+    "numpy",
+    "onnxruntime",
+    "pillow",
+]
+
+[dependency-groups]
+# Needed only to convert the upstream PyTorch checkpoints to ONNX.
+export = [
+    "charm-tokenizer==1.0.17",
+    "ml-collections",
+    "onnx",
+    "onnxscript",
+    "torch",
+    "torchvision",
+    "transformers==4.36.0",
+]
+dev = [
+    "pytest",
+    "scikit-image>=0.26.0",
+]
+
+[tool.uv]
+default-groups = ["export", "dev"]
+# charm-tokenizer pins timm==0.4.12 but never imports it.
+override-dependencies = ["timm; sys_platform == 'never'"]
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+torchvision = { index = "pytorch-cpu" }
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/charm_onnx"]

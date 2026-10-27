@@ -1,0 +1,20 @@
+charm-onnx
+Copyright 2026 Jan Ludwina
+
+This project converts and reimplements parts of Charm
+(https://github.com/FBehrad/Charm, https://huggingface.co/FatemehBehrad/Charm),
+Copyright Fatemeh Behrad, Tinne Tuytelaars, Johan Wagemans, licensed under the
+Apache License, Version 2.0.
+
+Changes relative to the original:
+- src/charm_onnx/tokenizer.py is a NumPy reimplementation of
+  Charm_tokenizer.ImageProcessor (Charm-tokenizer 1.0.17).
+- src/charm_onnx/export.py rewrites the Charm model forward pass with traceable
+  ops and folds DINOv2 LayerScale into the preceding linear layers before ONNX
+  export. Exported weights are numerically equivalent to the originals.
+
+The backbone is DINOv2 (https://github.com/facebookresearch/dinov2),
+licensed under the Apache License, Version 2.0.
+
+Test images in tests/images/ are from scikit-image (skimage.data) and are in the
+public domain or CC0.
